@@ -73,27 +73,76 @@ export const useContestantStore = create((set, get) => ({
     }
   },
 
-  payRegistrationFee: async () => {
+  payRegistrationFee: async (simulateTest = false) => {
     try {
       set({ loading: true, error: null });
-      const orderRes = await api.post("/contestants/pay-fee");
+      const orderRes = await api.post("/contestants/initiate-payment");
       if (!orderRes.data?.success) {
         throw new Error(orderRes.data?.message || "Order creation failed");
       }
-      const orderData = orderRes.data.data;
+      const payData = orderRes.data.data;
 
-      // Verify payment (mock verification)
-      const verifyRes = await api.post("/contestants/verify-fee", {
-        razorpayOrderId: orderData.razorpayOrderId,
-        razorpayPaymentId: `pay_reg_${Date.now()}`,
-        razorpaySignature: "mock_sig",
-      });
+      if (simulateTest) {
+        // Instant test verification fallback
+        const verifyRes = await api.post("/contestants/payu/success", {
+          status: "success",
+          txnid: payData.txnid,
+          amount: payData.amount,
+          productinfo: payData.productinfo,
+          firstname: payData.firstname,
+          email: payData.email,
+          udf1: payData.udf1,
+          udf2: payData.udf2,
+          udf3: payData.udf3,
+          hash: payData.hash,
+        });
 
-      if (verifyRes.data?.success) {
-        set({ loading: false });
-        get().fetchMyProfile();
-        return verifyRes.data;
+        if (verifyRes.data?.success) {
+          set({ loading: false });
+          await get().fetchMyProfile();
+          return verifyRes.data;
+        }
       }
+
+      // Real PayU Hosted Form Submission
+      if (typeof window !== "undefined") {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = payData.action || "https://test.payu.in/_payment";
+
+        const fields = [
+          "key",
+          "txnid",
+          "amount",
+          "productinfo",
+          "firstname",
+          "email",
+          "phone",
+          "surl",
+          "furl",
+          "hash",
+          "udf1",
+          "udf2",
+          "udf3",
+          "udf4",
+          "udf5",
+        ];
+
+        fields.forEach((field) => {
+          if (payData[field] !== undefined && payData[field] !== null) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = field;
+            input.value = payData[field];
+            form.appendChild(input);
+          }
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      return payData;
     } catch (err) {
       const msg = err.response?.data?.message || err.message || "Fee payment failed";
       set({ error: msg, loading: false });

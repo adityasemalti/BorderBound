@@ -24,9 +24,9 @@ export default function VoteModal() {
   const unitPrice = 5;
   const totalAmount = votesCount * unitPrice;
 
-  const handlePay = async () => {
+  const handlePay = async (simulate = false) => {
     try {
-      await submitVotePayment();
+      await submitVotePayment(simulate);
       fetchLeaderboard();
     } catch (err) {}
   };
@@ -151,21 +151,31 @@ export default function VoteModal() {
           </div>
         </div>
 
-        {/* Pay Button */}
-        <button
-          onClick={handlePay}
-          disabled={loading || votesCount < 1}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-extrabold text-base shadow-xl shadow-rose-500/25 transition-all duration-300 transform active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <>
-              <Sparkles className="w-5 h-5" />
-              <span>PROCEED TO PAY ₹{totalAmount}</span>
-            </>
-          )}
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          <button
+            onClick={() => handlePay(false)}
+            disabled={loading || votesCount < 1}
+            className="w-full py-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-extrabold text-base shadow-xl shadow-rose-500/25 transition-all duration-300 transform active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <Sparkles className="w-5 h-5" />
+                <span>PAY ₹{totalAmount} WITH PAYU</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={() => handlePay(true)}
+            disabled={loading || votesCount < 1}
+            className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-amber-400 font-bold text-xs border border-amber-500/30 transition-all flex items-center justify-center gap-1.5"
+          >
+            <span>Simulate Instant PayU Success (Test Mode)</span>
+          </button>
+        </div>
       </div>
     </div>
   );

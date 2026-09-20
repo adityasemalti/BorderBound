@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useContestantStore } from "@/store/contestantStore";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { User, Trophy, Vote, CheckCircle, Clock, AlertTriangle, Share2, Sparkles } from "lucide-react";
+import { User, Trophy, Vote, CheckCircle, Clock, AlertTriangle, Share2, Sparkles, AlertCircle } from "lucide-react";
 
-export default function ContestantDashboard() {
+function DashboardContent() {
   const { user } = useAuthStore();
   const { myProfile, fetchMyProfile, loading } = useContestantStore();
+  const searchParams = useSearchParams();
+  const paymentStatus = searchParams?.get("payment");
+  const txnid = searchParams?.get("txnid");
+  const reason = searchParams?.get("reason");
 
   useEffect(() => {
     if (user) fetchMyProfile();
@@ -34,6 +39,30 @@ export default function ContestantDashboard() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      {/* Payment Alerts */}
+      {paymentStatus === "success" && (
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-3">
+          <CheckCircle className="w-5 h-5 flex-shrink-0" />
+          <div>
+            <span className="font-bold block">PayU Registration Fee Payment Successful!</span>
+            <span className="text-xs text-emerald-300/80 font-mono">
+              Transaction ID: {txnid || "BBTXN"} • Application is now pending official admin review.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {paymentStatus === "failed" && (
+        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <div>
+            <span className="font-bold block">PayU Payment Failed or Cancelled</span>
+            <span className="text-xs text-rose-300/80">
+              {reason || "The payment could not be processed. Please try again."}
+            </span>
+          </div>
+        </div>
+      )}
       {/* Welcome Banner */}
       <div className="p-8 rounded-3xl bg-slate-900/80 border border-white/10 backdrop-blur-xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -111,5 +140,13 @@ export default function ContestantDashboard() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ContestantDashboard() {
+  return (
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-24 text-center font-mono text-slate-400">Loading Dashboard...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }

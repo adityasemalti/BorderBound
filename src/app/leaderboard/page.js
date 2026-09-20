@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useLeaderboardStore } from "@/store/leaderboardStore";
+import { useSearchParams } from "next/navigation";
 import ContestantCard from "@/components/ContestantCard";
-import { Vote, Search, Filter, RefreshCw, Trophy, Crown, Sparkles } from "lucide-react";
+import { Vote, Search, Filter, RefreshCw, Trophy, Crown, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
 
-export default function LeaderboardPage() {
+function LeaderboardContent() {
   const {
     leaderboard,
     pagination,
@@ -18,6 +19,11 @@ export default function LeaderboardPage() {
     fetchLeaderboard,
   } = useLeaderboardStore();
 
+  const searchParams = useSearchParams();
+  const votingStatus = searchParams?.get("voting");
+  const votesCount = searchParams?.get("votes");
+  const reason = searchParams?.get("reason");
+
   useEffect(() => {
     fetchLeaderboard();
   }, [fetchLeaderboard]);
@@ -28,6 +34,30 @@ export default function LeaderboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+      {/* Voting Alerts */}
+      {votingStatus === "success" && (
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-3">
+          <CheckCircle className="w-5 h-5 flex-shrink-0" />
+          <div>
+            <span className="font-bold block">PayU Vote Payment Successful!</span>
+            <span className="text-xs text-emerald-300/80 font-mono">
+              Successfully allocated {votesCount || "your"} votes! Leaderboard rankings updated.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {votingStatus === "failed" && (
+        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <div>
+            <span className="font-bold block">Vote Payment Failed or Cancelled</span>
+            <span className="text-xs text-rose-300/80">
+              {reason || "The voting transaction could not be completed."}
+            </span>
+          </div>
+        </div>
+      )}
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/10 pb-8">
         <div>
@@ -156,5 +186,13 @@ export default function LeaderboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-24 text-center font-mono text-slate-400">Loading Leaderboard...</div>}>
+      <LeaderboardContent />
+    </Suspense>
   );
 }

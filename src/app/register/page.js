@@ -130,7 +130,7 @@ export default function RegistrationWizard() {
     });
   }, [myProfile]);
 
-  const regAmount = configData?.registration?.amount || 499;
+  const regAmount = configData?.registration?.amount || 1;
 
   const progress = useMemo(() => {
     return ((step - 1) / 3) * 100;
@@ -194,10 +194,12 @@ export default function RegistrationWizard() {
     } catch (err) {}
   };
 
-  const handleFeePayment = async () => {
+  const handleFeePayment = async (simulate = false) => {
     try {
-      await payRegistrationFee();
-      router.push("/dashboard");
+      await payRegistrationFee(simulate);
+      if (simulate) {
+        router.push("/dashboard");
+      }
     } catch (err) {}
   };
 
@@ -939,32 +941,42 @@ export default function RegistrationWizard() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleFeePayment}
-                  disabled={loading}
-                  className="group relative mt-6 w-full max-w-sm mx-auto h-14 sm:h-16 rounded-2xl overflow-hidden bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500 text-white font-black text-sm shadow-2xl shadow-rose-500/20 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.985] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                >
-                  <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <div className="space-y-3 max-w-sm mx-auto mt-6">
+                  <button
+                    onClick={() => handleFeePayment(false)}
+                    disabled={loading}
+                    className="group relative w-full h-14 sm:h-16 rounded-2xl overflow-hidden bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500 text-white font-black text-sm shadow-2xl shadow-rose-500/20 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.985] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
-                  <span className="relative flex items-center gap-3">
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing payment...
-                      </>
-                    ) : (
-                      <>
-                        Pay ₹{regAmount} & Complete Registration
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
-                  </span>
-                </button>
+                    <span className="relative flex items-center gap-3">
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Redirecting to PayU...
+                        </>
+                      ) : (
+                        <>
+                          Pay ₹{regAmount} via PayU Gateway
+                          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => handleFeePayment(true)}
+                    disabled={loading}
+                    className="w-full py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-amber-400 font-bold text-xs border border-amber-500/20 transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Simulate Instant PayU Success (Test Mode)</span>
+                  </button>
+                </div>
 
                 <div className="flex items-center justify-center gap-2 mt-5">
                   <LockKeyhole className="w-3 h-3 text-zinc-700" />
                   <span className="text-[9px] text-zinc-700">
-                    Secure payment • Official BorderBound portal
+                    Secure 256-bit encrypted PayU payment • Official BorderBound portal
                   </span>
                 </div>
               </div>
