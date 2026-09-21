@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,9 +7,6 @@ import {
   AlertCircle,
   ArrowRight,
   CalendarDays,
-  Check,
-  ChevronLeft,
-  Fingerprint,
   Lock,
   Mail,
   MapPin,
@@ -29,7 +25,6 @@ export default function AuthModal() {
     setAuthMode,
     login,
     register,
-    verifyOtp,
     loading,
     error,
   } = useAuthStore();
@@ -50,8 +45,6 @@ export default function AuthModal() {
     password: "",
   });
 
-  const [otpCode, setOtpCode] = useState("");
-
   useEffect(() => {
     if (!isAuthModalOpen) return;
 
@@ -65,6 +58,17 @@ export default function AuthModal() {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isAuthModalOpen, closeAuthModal]);
+
+  useEffect(() => {
+    if (!isAuthModalOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isAuthModalOpen]);
 
   if (!isAuthModalOpen) return null;
 
@@ -84,19 +88,6 @@ export default function AuthModal() {
     } catch (err) {}
   };
 
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await verifyOtp(otpCode);
-    } catch (err) {}
-  };
-
-  const handleOtpChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
-    setOtpCode(value);
-  };
-
   const modeMeta = {
     login: {
       eyebrow: "WELCOME BACK",
@@ -111,16 +102,9 @@ export default function AuthModal() {
         "Create your contestant account and take the first step towards BorderBound.",
       icon: User,
     },
-    otp: {
-      eyebrow: "SECURITY CHECK",
-      title: "Verify your number.",
-      description:
-        "One final check before we create your contestant account.",
-      icon: ShieldCheck,
-    },
   };
 
-  const current = modeMeta[authMode];
+  const current = modeMeta[authMode] || modeMeta.login;
   const CurrentIcon = current.icon;
 
   return (
@@ -130,9 +114,11 @@ export default function AuthModal() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center bg-black/85 backdrop-blur-xl"
+        className=" fixed inset-0 z-[999] flex items-end sm:items-center justify-center  bg-black/85 backdrop-blur-xl p-0 sm:p-4"
         onMouseDown={(e) => {
-          if (e.target === e.currentTarget) closeAuthModal();
+          if (e.target === e.currentTarget) {
+            closeAuthModal();
+          }
         }}
       >
         {/* Background atmosphere */}
@@ -147,12 +133,15 @@ export default function AuthModal() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full bg-rose-600/[0.07] blur-[110px]"
+            className=" absolute top-[15%] left-1/2 -translate-x-1/2
+              w-[260px] h-[260px] sm:w-[450px] sm:h-[450px] rounded-full bg-rose-600/[0.07] blur-[100px] sm:blur-[110px] "
           />
 
-          <div className="absolute bottom-0 right-0 w-[220px] h-[220px] bg-orange-500/[0.04] blur-[100px] rounded-full" />
+          <div
+            className=" absolute bottom-0 right-0 w-[220px] h-[220px] bg-orange-500/[0.04]  blur-[100px] rounded-full " />
         </div>
 
+        {/* Modal */}
         <motion.div
           initial={{
             opacity: 0,
@@ -173,98 +162,191 @@ export default function AuthModal() {
             duration: 0.35,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="relative w-full sm:max-w-md max-h-[94vh] sm:max-h-[90vh] flex flex-col"
-        >
-          <div className="relative overflow-hidden rounded-t-[30px] sm:rounded-[30px] border border-white/10 bg-[#0a0a0a] shadow-[0_-20px_80px_rgba(0,0,0,0.5)] sm:shadow-2xl">
+          className=" relative w-full sm:max-w-md h-auto max-h-[100dvh] sm:max-h-[92dvh] flex flex-col" >
+          <div
+            className=" relative flex flex-col  overflow-hidden rounded-t-[28px] sm:rounded-[30px] border
+              border-white/10
+              bg-[#0a0a0a]
+              shadow-[0_-20px_80px_rgba(0,0,0,0.5)] sm:shadow-2xl max-h-[100dvh] sm:max-h-[92dvh] " >
             {/* Top accent */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-rose-500/70 to-transparent" />
+            <div
+              className=" absolute top-0 left-0 right-0 h-px bg-gradient-to-r
+              from-transparent
+              via-rose-500/70
+              to-transparent
+            "
+            />
 
             {/* Close */}
             <button
               type="button"
               onClick={closeAuthModal}
-              className="absolute z-20 top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-xl border border-white/8 bg-white/[0.04] flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/[0.08] transition-all active:scale-95"
-              aria-label="Close"
-            >
+              className=" absolute z-20 top-3.5 right-3.5 sm:top-5 sm:right-5 w-9 h-9
+                rounded-xl border border-white/8 bg-white/[0.04] flex items-center justify-center
+                text-zinc-500 hover:text-white hover:bg-white/[0.08] transition-all active:scale-95 "
+              aria-label="Close" >
               <X className="w-4 h-4" />
             </button>
 
             {/* Header */}
-            <div className="px-5 pt-6 pb-5 sm:px-7 sm:pt-7 sm:pb-6">
+            <div
+              className=" shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-7 sm:pb-6 "
+            >
               <div className="flex items-start gap-3 pr-10">
                 <motion.div
                   key={authMode}
-                  initial={{ scale: 0.8, opacity: 0, rotate: -8 }}
-                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                  initial={{
+                    scale: 0.8,
+                    opacity: 0,
+                    rotate: -8,
+                  }}
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                    rotate: 0,
+                  }}
                   transition={{ duration: 0.3 }}
-                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-rose-500/15 to-orange-500/10 border border-rose-500/15 flex items-center justify-center flex-shrink-0"
+                  className=" w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-rose-500/15 to-orange-500/10 border
+                    border-rose-500/15 flex items-center justify-center flex-shrink-0 "
                 >
                   <CurrentIcon className="w-5 h-5 text-rose-400" />
                 </motion.div>
 
                 <div className="min-w-0">
-                  <p className="text-[9px] uppercase tracking-[0.25em] text-rose-400 font-bold">
+                  <p
+                    className=" text-[9px] uppercase tracking-[0.25em]  text-rose-400 font-bold "
+                  >
                     {current.eyebrow}
                   </p>
 
                   <AnimatePresence mode="wait">
                     <motion.h2
                       key={authMode}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      className="text-xl sm:text-2xl font-black tracking-tight text-white mt-1 leading-tight"
+                      initial={{
+                        opacity: 0,
+                        y: 6,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        y: -6,
+                      }}
+                      className=" text-xl sm:text-2xl font-black tracking-tight text-white mt-1 leading-tight "
                     >
                       {current.title}
                     </motion.h2>
                   </AnimatePresence>
 
-                  <p className="text-[11px] sm:text-xs leading-5 text-zinc-600 mt-1.5">
+                  <p
+                    className=" text-[11px] sm:text-xs leading-5 text-zinc-600  mt-1.5 max-w-[290px] "
+                  >
                     {current.description}
                   </p>
                 </div>
               </div>
 
               {/* Mode switch */}
-              {authMode !== "otp" && (
-                <div className="flex mt-6 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <ModeButton
-                    active={authMode === "login"}
-                    onClick={() => setAuthMode("login")}
-                  >
-                    Sign In
-                  </ModeButton>
+              <div
+                className=" flex mt-5 sm:mt-6 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] "
+              >
+                <ModeButton
+                  active={authMode === "login"}
+                  onClick={() => setAuthMode("login")}
+                >
+                  Sign In
+                </ModeButton>
 
-                  <ModeButton
-                    active={authMode === "register"}
-                    onClick={() => setAuthMode("register")}
-                  >
-                    Register
-                  </ModeButton>
-                </div>
-              )}
+                <ModeButton
+                  active={authMode === "register"}
+                  onClick={() => setAuthMode("register")}
+                >
+                  Register
+                </ModeButton>
+              </div>
             </div>
 
             {/* Error */}
             <AnimatePresence>
               {error && (
                 <motion.div
-                  initial={{ opacity: 0, height: 0, y: -5 }}
-                  animate={{ opacity: 1, height: "auto", y: 0 }}
-                  exit={{ opacity: 0, height: 0, y: -5 }}
-                  className="px-5 sm:px-7 overflow-hidden"
+                  initial={{
+                    opacity: 0,
+                    height: 0,
+                    y: -5,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    height: "auto",
+                    y: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    height: 0,
+                    y: -5,
+                  }}
+                  className="
+                    px-5
+                    sm:px-7
+                    overflow-hidden
+                    shrink-0
+                  "
                 >
-                  <div className="flex gap-3 p-3.5 rounded-2xl bg-rose-500/[0.07] border border-rose-500/15 mb-2">
-                    <div className="w-7 h-7 rounded-lg bg-rose-500/10 flex items-center justify-center flex-shrink-0">
-                      <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
+                  <div
+                    className="
+                    flex
+                    gap-3
+                    p-3.5
+                    rounded-2xl
+                    bg-rose-500/[0.07]
+                    border
+                    border-rose-500/15
+                    mb-2
+                  "
+                  >
+                    <div
+                      className="
+                      w-7
+                      h-7
+                      rounded-lg
+                      bg-rose-500/10
+                      flex
+                      items-center
+                      justify-center
+                      flex-shrink-0
+                    "
+                    >
+                      <AlertCircle
+                        className="
+                        w-3.5
+                        h-3.5
+                        text-rose-400
+                      "
+                      />
                     </div>
 
                     <div className="min-w-0">
-                      <p className="text-[10px] font-bold text-rose-300">
+                      <p
+                        className="
+                        text-[10px]
+                        font-bold
+                        text-rose-300
+                      "
+                      >
                         Unable to continue
                       </p>
 
-                      <p className="text-[10px] text-rose-300/60 leading-4 mt-0.5 break-words">
+                      <p
+                        className="
+                        text-[10px]
+                        text-rose-300/60
+                        leading-4
+                        mt-0.5
+                        break-words
+                      "
+                      >
                         {error}
                       </p>
                     </div>
@@ -274,16 +356,41 @@ export default function AuthModal() {
             </AnimatePresence>
 
             {/* Body */}
-            <div className="px-5 sm:px-7 pb-6 overflow-y-auto max-h-[64vh] sm:max-h-[58vh] scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+            <div
+              className="
+              flex-1
+              min-h-0
+              px-5
+              sm:px-7
+              pb-5
+              sm:pb-6
+              overflow-y-auto
+              overscroll-contain
+              scrollbar-thin
+              scrollbar-thumb-white/10
+              scrollbar-track-transparent
+            "
+            >
               <AnimatePresence mode="wait">
                 {/* LOGIN */}
                 {authMode === "login" && (
                   <motion.form
                     key="login"
-                    initial={{ opacity: 0, x: 15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -15 }}
-                    transition={{ duration: 0.22 }}
+                    initial={{
+                      opacity: 0,
+                      x: 15,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -15,
+                    }}
+                    transition={{
+                      duration: 0.22,
+                    }}
                     onSubmit={handleLoginSubmit}
                     className="space-y-4"
                   >
@@ -322,14 +429,41 @@ export default function AuthModal() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="group relative overflow-hidden w-full h-14 rounded-2xl bg-white text-black font-black text-sm flex items-center justify-center gap-3 transition-all hover:bg-zinc-200 active:scale-[0.985] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="
+                        group
+                        relative
+                        overflow-hidden
+                        w-full
+                        min-h-14
+                        rounded-2xl
+                        bg-white
+                        text-black
+                        font-black
+                        text-sm
+                        flex
+                        items-center
+                        justify-center
+                        gap-3
+                        transition-all
+                        hover:bg-zinc-200
+                        active:scale-[0.985]
+                        disabled:opacity-50
+                        disabled:cursor-not-allowed
+                      "
                     >
                       {loading ? (
                         <LoadingSpinner text="Signing you in..." />
                       ) : (
                         <>
                           Enter BorderBound
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight
+                            className="
+                            w-4
+                            h-4
+                            group-hover:translate-x-1
+                            transition-transform
+                          "
+                          />
                         </>
                       )}
                     </button>
@@ -342,10 +476,21 @@ export default function AuthModal() {
                 {authMode === "register" && (
                   <motion.form
                     key="register"
-                    initial={{ opacity: 0, x: 15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -15 }}
-                    transition={{ duration: 0.22 }}
+                    initial={{
+                      opacity: 0,
+                      x: 15,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -15,
+                    }}
+                    transition={{
+                      duration: 0.22,
+                    }}
                     onSubmit={handleRegisterSubmit}
                     className="space-y-4"
                   >
@@ -365,42 +510,50 @@ export default function AuthModal() {
                       }
                     />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <AuthInput
-                        label="Mobile Number"
-                        icon={Phone}
-                        type="tel"
-                        required
-                        autoComplete="tel"
-                        inputMode="numeric"
-                        placeholder="9876543210"
-                        value={regData.mobile}
-                        onChange={(e) =>
-                          setRegData({
-                            ...regData,
-                            mobile: e.target.value,
-                          })
-                        }
-                      />
+                    <AuthInput
+                      label="Mobile Number"
+                      icon={Phone}
+                      type="tel"
+                      required
+                      autoComplete="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      placeholder="9876543210"
+                      value={regData.mobile}
+                      onChange={(e) =>
+                        setRegData({
+                          ...regData,
+                          mobile: e.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 10),
+                        })
+                      }
+                    />
 
-                      <AuthInput
-                        label="Email Address"
-                        icon={Mail}
-                        type="email"
-                        required
-                        autoComplete="email"
-                        placeholder="you@email.com"
-                        value={regData.email}
-                        onChange={(e) =>
-                          setRegData({
-                            ...regData,
-                            email: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
+                    <AuthInput
+                      label="Email Address"
+                      icon={Mail}
+                      type="email"
+                      required
+                      autoComplete="email"
+                      placeholder="you@email.com"
+                      value={regData.email}
+                      onChange={(e) =>
+                        setRegData({
+                          ...regData,
+                          email: e.target.value,
+                        })
+                      }
+                    />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div
+                      className="
+                      grid
+                      grid-cols-1
+                      sm:grid-cols-2
+                      gap-4
+                    "
+                    >
                       <AuthInput
                         label="Date of Birth"
                         icon={CalendarDays}
@@ -416,14 +569,37 @@ export default function AuthModal() {
                       />
 
                       <div>
-                        <label className="block text-[9px] uppercase tracking-[0.15em] font-bold text-zinc-500 mb-2">
+                        <label
+                          className="
+                          block
+                          text-[9px]
+                          uppercase
+                          tracking-[0.15em]
+                          font-bold
+                          text-zinc-500
+                          mb-2
+                        "
+                        >
                           Gender
+                          <span className="text-rose-400 ml-1">*</span>
                         </label>
 
                         <div className="relative">
-                          <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none" />
+                          <User
+                            className="
+                            absolute
+                            left-3.5
+                            top-1/2
+                            -translate-y-1/2
+                            w-4
+                            h-4
+                            text-zinc-600
+                            pointer-events-none
+                          "
+                          />
 
                           <select
+                            required
                             value={regData.gender}
                             onChange={(e) =>
                               setRegData({
@@ -441,7 +617,14 @@ export default function AuthModal() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div
+                      className="
+                      grid
+                      grid-cols-1
+                      sm:grid-cols-2
+                      gap-4
+                    "
+                    >
                       <AuthInput
                         label="City"
                         icon={MapPin}
@@ -491,132 +674,84 @@ export default function AuthModal() {
                       }
                     />
 
-                    <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-white/[0.025] border border-white/[0.06]">
-                      <ShieldCheck className="w-3.5 h-3.5 text-zinc-600 mt-0.5 flex-shrink-0" />
+                    {/* Security info */}
+                    <div
+                      className="
+                      flex
+                      items-start
+                      gap-2.5
+                      p-3.5
+                      rounded-2xl
+                      bg-white/[0.025]
+                      border
+                      border-white/[0.06]
+                    "
+                    >
+                      <ShieldCheck
+                        className="
+                        w-3.5
+                        h-3.5
+                        text-zinc-600
+                        mt-0.5
+                        flex-shrink-0
+                      "
+                      />
 
-                      <p className="text-[9px] leading-4 text-zinc-600">
-                        Your mobile number will be verified with a one-time
-                        password before your account is activated.
+                      <p
+                        className="
+                        text-[9px]
+                        leading-4
+                        text-zinc-600
+                      "
+                      >
+                        Your information is securely stored and your account is
+                        protected with secure authentication.
                       </p>
                     </div>
 
                     <button
                       type="submit"
                       disabled={loading}
-                      className="group w-full h-14 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500 text-white font-black text-sm flex items-center justify-center gap-3 shadow-xl shadow-rose-500/10 hover:brightness-110 active:scale-[0.985] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="
+                        group
+                        w-full
+                        min-h-14
+                        rounded-2xl
+                        bg-gradient-to-r
+                        from-rose-600
+                        via-rose-500
+                        to-orange-500
+                        text-white
+                        font-black
+                        text-sm
+                        flex
+                        items-center
+                        justify-center
+                        gap-3
+                        shadow-xl
+                        shadow-rose-500/10
+                        hover:brightness-110
+                        active:scale-[0.985]
+                        transition-all
+                        disabled:opacity-50
+                        disabled:cursor-not-allowed
+                      "
                     >
                       {loading ? (
                         <LoadingSpinner text="Creating account..." />
                       ) : (
                         <>
-                          Continue with Mobile Verification
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </>
-                      )}
-                    </button>
-                  </motion.form>
-                )}
-
-                {/* OTP */}
-                {authMode === "otp" && (
-                  <motion.form
-                    key="otp"
-                    initial={{ opacity: 0, x: 15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -15 }}
-                    transition={{ duration: 0.22 }}
-                    onSubmit={handleOtpSubmit}
-                    className="space-y-5"
-                  >
-                    <div className="relative overflow-hidden rounded-[24px] border border-amber-500/10 bg-amber-500/[0.035] p-5 text-center">
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.05, 1],
-                          opacity: [0.4, 0.7, 0.4],
-                        }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                        }}
-                        className="absolute w-24 h-24 rounded-full bg-amber-500/10 blur-2xl left-1/2 -translate-x-1/2 top-2"
-                      />
-
-                      <div className="relative">
-                        <div className="mx-auto w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/15 flex items-center justify-center">
-                          <Phone className="w-5 h-5 text-amber-400" />
-                        </div>
-
-                        <p className="text-xs font-bold text-amber-200 mt-3">
-                          Check your mobile
-                        </p>
-
-                        <p className="text-[10px] leading-4 text-amber-200/50 mt-1">
-                          Enter the 6-digit verification code sent to your
-                          registered mobile number.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-center text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-500 mb-3">
-                        Verification Code
-                      </label>
-
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="one-time-code"
-                        required
-                        maxLength={6}
-                        placeholder="000000"
-                        value={otpCode}
-                        onChange={handleOtpChange}
-                        autoFocus
-                        className="w-full h-16 rounded-2xl bg-white/[0.025] border border-white/[0.09] text-center text-2xl sm:text-3xl tracking-[0.35em] font-mono font-black text-white placeholder:text-zinc-800 outline-none focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/[0.05] transition-all"
-                      />
-
-                      <div className="flex justify-center gap-1.5 mt-3">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                          <motion.span
-                            key={index}
-                            animate={{
-                              scale:
-                                otpCode.length === index
-                                  ? [1, 1.25, 1]
-                                  : 1,
-                            }}
-                            className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                              otpCode.length > index
-                                ? "bg-amber-400"
-                                : "bg-zinc-800"
-                            }`}
+                          Create My Account
+                          <ArrowRight
+                            className="
+                            w-4
+                            h-4
+                            group-hover:translate-x-1
+                            transition-transform
+                          "
                           />
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading || otpCode.length < 6}
-                      className="group w-full h-14 rounded-2xl bg-white text-black font-black text-sm flex items-center justify-center gap-3 hover:bg-zinc-200 active:scale-[0.985] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                    >
-                      {loading ? (
-                        <LoadingSpinner text="Verifying..." dark />
-                      ) : (
-                        <>
-                          Verify & Create Account
-                          <Check className="w-4 h-4 group-hover:scale-110 transition-transform" />
                         </>
                       )}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setAuthMode("register")}
-                      className="mx-auto flex items-center gap-2 text-[10px] font-bold text-zinc-600 hover:text-zinc-300 transition-colors"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                      Back to registration
                     </button>
                   </motion.form>
                 )}
@@ -624,20 +759,70 @@ export default function AuthModal() {
             </div>
 
             {/* Footer */}
-            <div className="px-5 sm:px-7 py-4 border-t border-white/[0.06] bg-white/[0.012]">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-3 h-3 text-zinc-700" />
-                  <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.15em] text-zinc-700 font-bold">
+            <div
+              className="
+              shrink-0
+              px-5
+              sm:px-7
+              py-3.5
+              sm:py-4
+              border-t
+              border-white/[0.06]
+              bg-white/[0.012]
+            "
+            >
+              <div
+                className="
+                flex
+                items-center
+                justify-between
+                gap-3
+              "
+              >
+                <div
+                  className="
+                  flex
+                  items-center
+                  gap-2
+                  min-w-0
+                "
+                >
+                  <Sparkles
+                    className="
+                    w-3
+                    h-3
+                    text-zinc-700
+                    flex-shrink-0
+                  "
+                  />
+
+                  <span
+                    className="
+                    text-[8px]
+                    sm:text-[9px]
+                    uppercase
+                    tracking-[0.15em]
+                    text-zinc-700
+                    font-bold
+                    truncate
+                  "
+                  >
                     THE BORDERBOUND
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-zinc-700">
+                <div
+                  className="
+                  flex
+                  items-center
+                  gap-1.5
+                  text-zinc-700
+                  flex-shrink-0
+                "
+                >
                   <ShieldCheck className="w-3 h-3" />
-                  <span className="text-[8px]">
-                    Secure registration
-                  </span>
+
+                  <span className="text-[8px]">Secure registration</span>
                 </div>
               </div>
             </div>
@@ -660,14 +845,38 @@ function AuthInput({
   ...props
 }) {
   return (
-    <div>
-      <label className="block text-[9px] uppercase tracking-[0.15em] font-bold text-zinc-500 mb-2">
+    <div className="w-full">
+      <label
+        className="
+        block
+        text-[9px]
+        uppercase
+        tracking-[0.15em]
+        font-bold
+        text-zinc-500
+        mb-2
+      "
+      >
         {label}
+
         {required && <span className="text-rose-400 ml-1">*</span>}
       </label>
 
       <div className="relative group">
-        <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700 group-focus-within:text-rose-400 transition-colors pointer-events-none" />
+        <Icon
+          className="
+          absolute
+          left-3.5
+          top-1/2
+          -translate-y-1/2
+          w-4
+          h-4
+          text-zinc-700
+          group-focus-within:text-rose-400
+          transition-colors
+          pointer-events-none
+        "
+        />
 
         <input
           type={type}
@@ -692,11 +901,7 @@ function AuthInput({
             focus:border-rose-500/35
             focus:ring-4
             focus:ring-rose-500/[0.05]
-            ${
-              type === "date"
-                ? "[color-scheme:dark]"
-                : ""
-            }
+            ${type === "date" ? "[color-scheme:dark]" : ""}
           `}
         />
       </div>
@@ -713,16 +918,28 @@ function ModeButton({ active, children, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`relative flex-1 h-9 rounded-lg text-[10px] font-bold transition-all ${
-        active
-          ? "text-white"
-          : "text-zinc-600 hover:text-zinc-400"
-      }`}
+      className={`
+        relative
+        flex-1
+        h-9
+        rounded-lg
+        text-[10px]
+        font-bold
+        transition-all
+        ${active ? "text-white" : "text-zinc-600 hover:text-zinc-400"}
+      `}
     >
       {active && (
         <motion.div
           layoutId="auth-mode-pill"
-          className="absolute inset-0 rounded-lg bg-white/[0.07] border border-white/[0.07]"
+          className="
+            absolute
+            inset-0
+            rounded-lg
+            bg-white/[0.07]
+            border
+            border-white/[0.07]
+          "
           transition={{
             type: "spring",
             stiffness: 350,
@@ -744,11 +961,18 @@ function LoadingSpinner({ text, dark = false }) {
   return (
     <>
       <span
-        className={`w-4 h-4 rounded-full border-2 ${
-          dark
-            ? "border-black/30 border-t-black"
-            : "border-white/30 border-t-white"
-        } animate-spin`}
+        className={`
+          w-4
+          h-4
+          rounded-full
+          border-2
+          ${
+            dark
+              ? "border-black/30 border-t-black"
+              : "border-white/30 border-t-white"
+          }
+          animate-spin
+        `}
       />
 
       <span>{text}</span>
@@ -762,10 +986,31 @@ function LoadingSpinner({ text, dark = false }) {
 
 function SecurityNote({ text }) {
   return (
-    <div className="flex items-center justify-center gap-2">
-      <ShieldCheck className="w-3 h-3 text-zinc-700" />
+    <div
+      className="
+      flex
+      items-center
+      justify-center
+      gap-2
+      px-2
+      text-center
+    "
+    >
+      <ShieldCheck
+        className="
+        w-3
+        h-3
+        text-zinc-700
+        flex-shrink-0
+      "
+      />
 
-      <span className="text-[9px] text-zinc-700">
+      <span
+        className="
+        text-[9px]
+        text-zinc-700
+      "
+      >
         {text}
       </span>
     </div>
@@ -795,5 +1040,6 @@ function selectClass() {
     focus:ring-4
     focus:ring-rose-500/[0.05]
     transition-all
+    cursor-pointer
   `;
 }
