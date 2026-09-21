@@ -440,7 +440,7 @@ export default function Page() {
                 </div>
 
                 <Link
-                  href="/leaderboard"
+                  href="/contestant"
                   className="group mt-9 flex min-h-[50px] items-center justify-between border border-red-500/30 bg-red-600 px-4 py-4 text-[9px] font-black uppercase tracking-[0.16em] transition-all hover:bg-red-500 hover:shadow-[0_0_35px_rgba(220,38,38,0.2)] sm:mt-12 sm:px-5 sm:text-[10px] sm:tracking-[0.2em]"
                 >
                   Cast Your Votes
