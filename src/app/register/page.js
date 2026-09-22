@@ -572,9 +572,9 @@ export default function RegistrationWizard() {
                         <p className="text-xs font-bold text-white">
                           Social presence
                         </p>
-                        <p className="text-[10px] text-zinc-600 mt-0.5">
+                        {/* <p className="text-[10px] text-zinc-600 mt-0.5">
                           Optional — help us discover your story
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 
