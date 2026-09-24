@@ -15,10 +15,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-[#080C14] text-slate-100 min-h-screen flex flex-col antialiased">
-        {/* <LiveTicker />
-        <Navbar /> */}
+         <LiveTicker />
+        <Navbar /> 
         <main className="flex-1">{children}</main>
-        {/* <Footer /> */}
+        <Footer />
 
         {/* Global Modals */}
         <VoteModal />

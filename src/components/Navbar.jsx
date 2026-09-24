@@ -100,13 +100,7 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
-          <Link
-            href="/home"
-            className="group relative py-6 text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
-          >
-            Home
-            <span className="absolute bottom-0 left-0 h-px w-0 bg-red-500 transition-all duration-300 group-hover:w-full" />
-          </Link>
+          
 
           <Link
             href="/leaderboard"
@@ -116,13 +110,23 @@ export default function Navbar() {
             Live Leaderboard
           </Link>
 
-          <Link
-            href="/register"
-            className="group flex items-center gap-2 py-6 text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-amber-400 transition-transform group-hover:rotate-12" />
-            Register
-          </Link>
+         {user ? (
+  <Link
+    href="/register"
+    className="group flex items-center gap-2 py-6 text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
+  >
+    <Sparkles className="h-3.5 w-3.5 text-amber-400 transition-transform group-hover:rotate-12" />
+    Register as Contestant
+  </Link>
+) : (
+  <Link
+    href="/register"
+    className="group flex items-center gap-2 py-6 text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
+  >
+    <Sparkles className="h-3.5 w-3.5 text-amber-400 transition-transform group-hover:rotate-12" />
+    Register
+  </Link>
+)}
 
           {user?.role === "admin" && (
             <Link
