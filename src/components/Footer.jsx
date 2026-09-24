@@ -1,87 +1,252 @@
 import Link from "next/link";
-import { Flame, ShieldCheck, Award, Trophy, Users } from "lucide-react";
+import {
+  ArrowUpRight,
+  Flame,
+  ShieldCheck,
+  Trophy,
+  Users,
+  Vote,
+} from "lucide-react";
 
 export default function Footer() {
+  const timeline = [
+    {
+      date: "05 OCT",
+      title: "Registration Opens",
+      active: true,
+    },
+    {
+      date: "15 OCT",
+      title: "Public Voting Opens",
+      active: false,
+    },
+    {
+      date: "20 OCT",
+      title: "Fee Changes",
+      active: false,
+      detail: "₹499 → ₹1,499",
+    },
+    {
+      date: "05 NOV",
+      title: "Registration Closes",
+      active: false,
+    },
+    {
+      date: "15 NOV",
+      title: "Voting Closes",
+      active: false,
+    },
+  ];
+
   return (
-    <footer className="border-t border-white/10 bg-[#05080E] text-slate-400 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Timeline Summary Banner */}
-        <div className="mb-16 p-8 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-xl">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+    <footer className="relative overflow-hidden border-t border-white/[0.07] bg-[#030303] text-zinc-400">
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-red-600/[0.035] blur-[120px]" />
+
+      <div className="relative mx-auto w-full max-w-[1500px] px-5 sm:px-8 lg:px-12">
+
+        {/* Timeline */}
+        <div className="border-b border-white/[0.07] py-14 sm:py-16">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-amber-400" />
-                OFFICIAL BORDERBOUND TIMELINE
-              </h3>
-              <p className="text-sm text-slate-400 mt-1">
-                India chooses who gets the opportunity. The Borderbound decides who survives it.
+              <div className="mb-4 flex items-center gap-3">
+                <span className="h-px w-8 bg-red-500" />
+
+                <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-red-400">
+                  Official Protocol
+                </span>
+              </div>
+
+              <h2 className="text-2xl font-black uppercase tracking-[-0.03em] text-white sm:text-3xl">
+                BorderBound Timeline
+              </h2>
+
+              <p className="mt-2 max-w-xl text-xs leading-5 text-zinc-400 sm:text-sm">
+                India chooses who gets the opportunity. The BorderBound
+                decides who survives it.
               </p>
             </div>
-            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-mono">
-              <Users className="w-4 h-4" />
-              <span>32 Initial + 4 Wild Cards = 36 Main Contestants</span>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
-            <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-              <span className="text-xs text-rose-400 font-mono font-bold block">5 OCT</span>
-              <span className="text-xs text-slate-200 font-semibold mt-1 block">Registration Opens</span>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-              <span className="text-xs text-amber-400 font-mono font-bold block">15 OCT</span>
-              <span className="text-xs text-slate-200 font-semibold mt-1 block">Public Voting Opens</span>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-              <span className="text-xs text-amber-400 font-mono font-bold block">20 OCT</span>
-              <span className="text-xs text-slate-200 font-semibold mt-1 block">Fee ₹499 → ₹1,499</span>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-              <span className="text-xs text-rose-400 font-mono font-bold block">5 NOV</span>
-              <span className="text-xs text-slate-200 font-semibold mt-1 block">Registration Closes</span>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-              <span className="text-xs text-rose-500 font-mono font-bold block">15 NOV</span>
-              <span className="text-xs text-slate-200 font-semibold mt-1 block">Voting Closes</span>
-            </div>
-          </div>
-        </div>
+            <div className="flex items-center gap-3 self-start rounded-full border border-red-500/15 bg-red-500/[0.04] px-4 py-2.5 lg:self-auto">
+              <Users className="h-4 w-4 text-red-400" />
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-          <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Flame className="w-6 h-6 text-rose-500" />
-              <span className="font-extrabold text-xl text-white tracking-wider">
-                THE BORDERBOUND
+              <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-zinc-300 sm:text-[10px]">
+                32 Initial + 04 Wild Cards
               </span>
-            </Link>
-            <p className="text-sm leading-relaxed text-slate-400 max-w-md">
-              The premier real-time outdoor reality competition. Thousands register, India decides, 50 remain in contention, 32 earn their place, and 4 fight back through the Wild Card.
-            </p>
+            </div>
           </div>
 
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link href="/" className="hover:text-rose-400 transition-colors">Home</Link></li>
-              <li><Link href="/leaderboard" className="hover:text-rose-400 transition-colors">Live Leaderboard</Link></li>
-              <li><Link href="/register" className="hover:text-rose-400 transition-colors">Register as Contestant</Link></li>
-            </ul>
-          </div>
+          {/* Timeline */}
+          <div className="mt-10 grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-5">
+            {timeline.map((item, index) => (
+              <div
+                key={item.date}
+                className="group relative flex gap-4 border-b border-white/[0.07] py-5 last:border-b-0 sm:border-b-0 sm:px-5 sm:first:pl-0 sm:last:pr-0 lg:border-r lg:border-white/[0.07] lg:py-2 lg:first:pl-0 lg:last:border-r-0"
+              >
+                {/* Connector */}
+                {index < timeline.length - 1 && (
+                  <div className="absolute bottom-0 left-[7px] top-[42px] hidden w-px bg-white/[0.07] sm:block lg:bottom-auto lg:left-auto lg:right-0 lg:top-1/2 lg:h-px lg:w-8" />
+                )}
 
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Rules & Security</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li className="flex items-center gap-2 text-slate-400"><ShieldCheck className="w-4 h-4 text-emerald-400" /> Anti-Fraud Verified</li>
-              <li className="flex items-center gap-2 text-slate-400"><Award className="w-4 h-4 text-amber-400" /> Official Terms & Conditions</li>
-              <li className="text-xs text-slate-500">₹5 = 1 Vote | Unlimited Voting</li>
-            </ul>
+                <div className="relative z-10 mt-1 flex h-3 w-3 shrink-0 items-center justify-center rounded-full border border-red-500/40 bg-[#030303]">
+                  <span className="h-1 w-1 rounded-full bg-red-500" />
+                </div>
+
+                <div>
+                  <div className="font-mono text-[9px] font-bold tracking-[0.2em] text-red-400">
+                    {item.date}
+                  </div>
+
+                  <div className="mt-1 text-xs font-bold uppercase tracking-[0.04em] text-zinc-200">
+                    {item.title}
+                  </div>
+
+                  {item.detail && (
+                    <div className="mt-1 text-[10px] text-zinc-500">
+                      {item.detail}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-slate-800/80 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} THE BORDERBOUND. All rights reserved.</p>
-          <p className="font-mono text-slate-500">Official Registration & Voting Platform</p>
+        {/* Main Footer */}
+        <div className="grid gap-12 py-14 sm:py-16 lg:grid-cols-[1.5fr_0.7fr_0.9fr] lg:gap-20">
+
+          {/* Brand */}
+          <div>
+            <Link
+              href="/home"
+              className="group inline-flex items-center gap-3"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/[0.06] transition-colors group-hover:border-red-500/40 group-hover:bg-red-500/[0.1]">
+                <Flame className="h-5 w-5 text-red-500" />
+              </div>
+
+              <div>
+                <div className="text-lg font-black tracking-[0.12em] text-white">
+                  BORDERBOUND
+                </div>
+
+                <div className="mt-0.5 text-[7px] font-bold uppercase tracking-[0.35em] text-zinc-500">
+                  15-Day Reality Competition
+                </div>
+              </div>
+            </Link>
+
+            <p className="mt-6 max-w-md text-xs leading-6 text-zinc-400 sm:text-sm">
+              A real-time outdoor reality competition where registration,
+              public voting, strategy and performance decide who gets to
+              cross the border.
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-2">
+              <div className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2">
+                <Users className="h-3.5 w-3.5 text-red-400" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-zinc-400">
+                  32 Contestants
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2">
+                <Vote className="h-3.5 w-3.5 text-amber-400" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-zinc-400">
+                  ₹5 / Vote
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <div className="mb-5 text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-500">
+              Navigate
+            </div>
+
+            <div className="space-y-3">
+              {[
+                ["Home", "/home"],
+                ["Leaderboard", "/leaderboard"],
+                ["Register", "/register"],
+                ["Support a Contestant", "/register/supporting"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="group flex items-center justify-between text-xs font-medium text-zinc-300 transition-colors hover:text-white"
+                >
+                  <span>{label}</span>
+
+                  <ArrowUpRight className="h-3.5 w-3.5 text-zinc-600 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-red-400" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Trust */}
+          <div>
+            <div className="mb-5 text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-500">
+              Trust & Verification
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+
+                <div>
+                  <div className="text-xs font-bold text-zinc-200">
+                    Secure Payments
+                  </div>
+                  <div className="mt-1 text-[10px] leading-4 text-zinc-500">
+                    Payments processed through a secure gateway.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Vote className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
+
+                <div>
+                  <div className="text-xs font-bold text-zinc-200">
+                    Verified Voting
+                  </div>
+                  <div className="mt-1 text-[10px] leading-4 text-zinc-500">
+                    Only valid successfully processed votes count.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Trophy className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+
+                <div>
+                  <div className="text-xs font-bold text-zinc-200">
+                    Public Leaderboard
+                  </div>
+                  <div className="mt-1 text-[10px] leading-4 text-zinc-500">
+                    Voting positions remain publicly visible.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="flex flex-col gap-4 border-t border-white/[0.07] py-7 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-zinc-600">
+            © {new Date().getFullYear()} The BorderBound. All rights reserved.
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="h-1 w-1 rounded-full bg-red-500" />
+
+            <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-zinc-500">
+              Official Registration & Voting Platform
+            </span>
+          </div>
         </div>
       </div>
     </footer>

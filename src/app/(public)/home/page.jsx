@@ -12,13 +12,15 @@ import {
   MoveUpRight,
   Play,
   Shield,
-  Sparkles,
   Trophy,
   Users,
   Vote,
   Zap,
 } from "lucide-react";
 import HeroCarousel from "./home-comp/Carousel";
+import RegistrationCountdown from "@/components/RegistrationCountdown";
+import WhyToRegister from "@/components/WhyToRegister";
+import PriceHike from "@/components/PriceHike";
 
 const reveal = {
   hidden: { opacity: 0, y: 25 },
@@ -44,7 +46,47 @@ export default function Page() {
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050506] text-white">
+      {/* =========================================================
+          STICKY REGISTER CTA
+      ========================================================= */}
+      <motion.div
+        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          duration: 0.6,
+          delay: 0.4,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+        className="fixed right-3 top-3 z-[100] sm:right-6 sm:top-5"
+      >
+        <Link
+          href="/register"
+          className="group relative flex items-center gap-2 overflow-hidden border border-red-400/60 bg-red-600 px-4 py-3 shadow-[0_8px_35px_rgba(220,38,38,0.25)] transition-all duration-300 hover:border-red-300 hover:bg-red-500 hover:shadow-[0_8px_45px_rgba(220,38,38,0.4)] sm:gap-3 sm:px-6 sm:py-3.5"
+        >
+          {/* animated shine */}
+          <span className="absolute inset-y-0 -left-10 w-8 rotate-[20deg] bg-white/20 blur-sm transition-all duration-700 group-hover:left-[120%]" />
+
+          {/* subtle pulse */}
+          <span className="absolute inset-0 animate-pulse bg-red-400/10" />
+
+          <span className="relative z-10 flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
+
+          <span className="relative z-10 text-[9px] font-black uppercase tracking-[0.16em] text-white sm:text-[10px] sm:tracking-[0.2em]">
+            Register Now
+          </span>
+
+          <ArrowRight className="relative z-10 h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      </motion.div>
+
+      {/* =========================================================
+          HERO CAROUSEL
+      ========================================================= */}
       <HeroCarousel />
+
+      {/* =========================================================
+          HERO / REGISTRATION
+      ========================================================= */}
       <section className="relative min-h-[calc(100svh-70px)] overflow-hidden border-b border-white/[0.07]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(220,38,38,0.12),transparent_30%),radial-gradient(circle_at_85%_15%,rgba(245,158,11,0.08),transparent_24%),linear-gradient(180deg,#080809_0%,#050506_100%)]" />
 
@@ -75,7 +117,7 @@ export default function Page() {
                   <Flame className="h-3.5 w-3.5 text-red-500" />
                 </span>
 
-                <div className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.25em] text-zinc-500 sm:text-[9px] sm:tracking-[0.3em]">
+                <div className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.25em] text-zinc-300 sm:text-[9px] sm:tracking-[0.3em]">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
                   Registration Open
                 </div>
@@ -84,7 +126,7 @@ export default function Page() {
               <h1 className="max-w-3xl text-[clamp(3rem,8vw,7rem)] font-black leading-[0.82] tracking-[-0.07em]">
                 <span className="block text-white">CROSS</span>
 
-                <span className="block bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-white via-zinc-300 to-zinc-500 bg-clip-text text-transparent">
                   THE
                 </span>
 
@@ -94,7 +136,7 @@ export default function Page() {
               </h1>
 
               <div className="mt-6 max-w-lg border-l border-red-500/40 pl-4 sm:mt-7 sm:pl-5">
-                <p className="text-xs leading-6 text-zinc-400 sm:text-sm sm:leading-7">
+                <p className="text-xs leading-6 text-zinc-300 sm:text-sm sm:leading-7">
                   32 contestants. One battlefield. Every decision matters. The
                   public decides who gets through the border.
                 </p>
@@ -102,43 +144,48 @@ export default function Page() {
 
               {/* REGISTER AS */}
               <div className="mt-8 sm:mt-10">
-                <div className="mb-3 text-[8px] font-bold uppercase tracking-[0.3em] text-zinc-600 sm:text-[9px]">
+                <div className="mb-3 flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.3em] text-zinc-300 sm:text-[9px]">
+                  <span className="h-px w-5 bg-red-500" />
                   Register As
                 </div>
 
                 <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
+                  {/* CONTESTANT */}
                   <Link
                     href="/register"
-                    className="group relative flex min-h-[64px] items-center justify-between overflow-hidden border border-red-500/30 bg-red-600 px-5 text-left transition-all duration-300 hover:border-red-400 hover:bg-red-500 hover:shadow-[0_0_45px_rgba(220,38,38,0.22)] sm:min-h-[72px] sm:px-6"
+                    className="group relative flex min-h-[68px] items-center justify-between overflow-hidden border border-red-500/40 bg-red-600 px-5 text-left shadow-[0_0_30px_rgba(220,38,38,0.12)] transition-all duration-300 hover:border-red-300 hover:bg-red-500 hover:shadow-[0_0_50px_rgba(220,38,38,0.28)] sm:min-h-[76px] sm:px-6"
                   >
-                    <div>
+                    <span className="absolute inset-y-0 -left-12 w-10 rotate-[20deg] bg-white/15 blur-sm transition-all duration-700 group-hover:left-[120%]" />
+
+                    <div className="relative z-10">
                       <div className="text-[10px] font-black uppercase tracking-[0.18em] text-white sm:text-xs">
                         Contestant
                       </div>
 
-                      <div className="mt-1 text-[8px] uppercase tracking-[0.1em] text-white/50">
+                      <div className="mt-1 text-[8px] uppercase tracking-[0.1em] text-white/80">
                         Enter the battlefield
                       </div>
                     </div>
 
-                    <ArrowRight className="h-4 w-4 shrink-0 text-white transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5" />
+                    <ArrowRight className="relative z-10 h-4 w-4 shrink-0 text-white transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5" />
                   </Link>
 
+                  {/* SUPPORTING */}
                   <Link
                     href="/register/supporting"
-                    className="group flex min-h-[64px] items-center justify-between border border-white/10 bg-white/[0.025] px-5 text-left backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] sm:min-h-[72px] sm:px-6"
+                    className="group flex min-h-[68px] items-center justify-between border border-white/15 bg-white/[0.035] px-5 text-left backdrop-blur-xl transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] sm:min-h-[76px] sm:px-6"
                   >
                     <div>
                       <div className="text-[10px] font-black uppercase tracking-[0.18em] text-white sm:text-xs">
                         Supporting Contestant
                       </div>
 
-                      <div className="mt-1 text-[8px] uppercase tracking-[0.1em] text-zinc-600">
+                      <div className="mt-1 text-[8px] uppercase tracking-[0.1em] text-zinc-300">
                         Back someone in the game
                       </div>
                     </div>
 
-                    <MoveUpRight className="h-4 w-4 shrink-0 text-zinc-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white sm:h-5 sm:w-5" />
+                    <MoveUpRight className="h-4 w-4 shrink-0 text-zinc-300 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white sm:h-5 sm:w-5" />
                   </Link>
                 </div>
               </div>
@@ -153,11 +200,11 @@ export default function Page() {
             >
               <div className="absolute -inset-6 rounded-full bg-red-600/[0.07] blur-[70px]" />
 
-              <div className="relative overflow-hidden border border-white/[0.10] bg-[#0a0a0c]/90 shadow-2xl backdrop-blur-2xl">
+              <div className="relative overflow-hidden border border-white/[0.12] bg-[#0a0a0c]/90 shadow-2xl backdrop-blur-2xl">
                 {/* TOP STATUS */}
-                <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4 sm:px-6">
+                <div className="flex items-center justify-between border-b border-white/[0.09] px-5 py-4 sm:px-6">
                   <div>
-                    <div className="text-[8px] font-bold uppercase tracking-[0.28em] text-zinc-600">
+                    <div className="text-[8px] font-bold uppercase tracking-[0.28em] text-zinc-300">
                       Current Status
                     </div>
 
@@ -167,44 +214,51 @@ export default function Page() {
                     </div>
                   </div>
 
-                  <div className="flex h-9 w-9 items-center justify-center border border-white/[0.06] bg-white/[0.025]">
-                    <Shield className="h-4 w-4 text-zinc-600" />
+                  <div className="flex h-9 w-9 items-center justify-center border border-white/[0.09] bg-white/[0.035]">
+                    <Shield className="h-4 w-4 text-zinc-300" />
                   </div>
                 </div>
 
                 {/* MAIN NUMBER */}
                 <div className="relative px-5 py-9 text-center sm:px-6 sm:py-12">
-                  <div className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/[0.06] blur-[55px]" />
+                  {/* Ambient red glow */}
+                  <div className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/[0.10] blur-[65px]" />
 
-                  <div className="relative">
-                    <div className="text-[8px] font-bold uppercase tracking-[0.35em] text-zinc-600 sm:text-[9px]">
+                  {/* Soft golden glow */}
+                  <div className="absolute left-[42%] top-[38%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400/[0.07] blur-[55px]" />
+
+                  {/* Subtle center highlight */}
+                  <div className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-red-500/[0.08] via-amber-400/[0.04] to-transparent blur-2xl" />
+
+                  <div className="relative z-10">
+                    <div className="text-[8px] font-bold uppercase tracking-[0.35em] text-zinc-300 sm:text-[9px]">
                       Contestants Entering
                     </div>
 
-                    <div className="mt-1 text-[5.5rem] font-black leading-none tracking-[-0.09em] text-white sm:text-[7rem]">
+                    <div className="mt-1 text-[5.5rem] font-black leading-none tracking-[-0.09em] text-white [text-shadow:0_0_35px_rgba(239,68,68,0.12),0_0_60px_rgba(245,158,11,0.08)] sm:text-[7rem]">
                       32
                     </div>
 
                     <div className="mt-2 flex items-center justify-center gap-2">
-                      <span className="h-px w-6 bg-red-500/40" />
+                      <span className="h-px w-6 bg-gradient-to-r from-transparent via-red-500/70 to-amber-400/50" />
 
                       <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-red-400 sm:text-[10px]">
                         Contestants
                       </span>
 
-                      <span className="h-px w-6 bg-red-500/40" />
+                      <span className="h-px w-6 bg-gradient-to-l from-transparent via-red-500/70 to-amber-400/50" />
                     </div>
                   </div>
                 </div>
 
                 {/* STATS */}
-                <div className="grid grid-cols-2 border-t border-white/[0.07]">
-                  <div className="border-r border-white/[0.07] px-5 py-5 text-center">
+                <div className="grid grid-cols-2 border-t border-white/[0.09]">
+                  <div className="border-r border-white/[0.09] px-5 py-5 text-center">
                     <div className="text-2xl font-black tracking-tight text-amber-400">
                       04
                     </div>
 
-                    <div className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+                    <div className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-300">
                       Gang Leaders
                     </div>
                   </div>
@@ -214,20 +268,21 @@ export default function Page() {
                       ₹5
                     </div>
 
-                    <div className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+                    <div className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-300">
                       Per Vote
                     </div>
                   </div>
                 </div>
 
+
                 {/* FOOTER */}
-                <div className="m-4 flex items-center justify-between border border-white/[0.05] bg-white/[0.02] px-4 py-3">
+                <div className="m-4 flex items-center justify-between border border-white/[0.08] bg-white/[0.025] px-4 py-3">
                   <div>
-                    <div className="text-[7px] uppercase tracking-[0.25em] text-zinc-700">
+                    <div className="text-[7px] uppercase tracking-[0.25em] text-zinc-400">
                       Selection System
                     </div>
 
-                    <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.15em] text-zinc-400">
+                    <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.15em] text-zinc-200">
                       Public Voting
                     </div>
                   </div>
@@ -240,14 +295,23 @@ export default function Page() {
             </motion.div>
           </div>
         </div>
+        
 
-        <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-zinc-700 sm:flex">
-          <span className="h-px w-10 bg-zinc-800" />
+      <WhyToRegister/>
+
+      <PriceHike/>
+
+
+        <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-zinc-400 sm:flex">
+          <span className="h-px w-10 bg-zinc-700" />
           Scroll To Explore
-          <span className="h-px w-10 bg-zinc-800" />
+          <span className="h-px w-10 bg-zinc-700" />
         </div>
       </section>
 
+      {/* =========================================================
+          STATS
+      ========================================================= */}
       <motion.section
         initial="hidden"
         whileInView="visible"
@@ -255,37 +319,101 @@ export default function Page() {
         variants={reveal}
         className="border-b border-white/[0.07]"
       >
-        <div className="mx-auto grid w-full max-w-[1500px] grid-cols-2 lg:grid-cols-4">
-          {[
-            ["01", "32", "Direct Qualifiers"],
-            ["02", "04", "Wild Card Slots"],
-            ["03", "₹5", "One Valid Vote"],
-            ["04", "100%", "Verified Voting"],
-          ].map(([number, value, label], index) => (
-            <div
-              key={number}
-              className={`relative min-w-0 p-4 sm:p-8 ${
-                index % 2 === 0
-                  ? "border-r border-white/[0.07]"
-                  : "border-r border-white/[0.07] lg:border-r"
-              } ${index > 1 ? "border-t border-white/[0.07] lg:border-t-0" : ""}`}
-            >
-              <span className="absolute right-3 top-3 text-[8px] font-mono text-zinc-800 sm:right-5 sm:top-5 sm:text-[9px]">
-                {number}
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-14 sm:px-8 sm:py-20 lg:px-12">
+          {/* Center Heading */}
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <span className="h-px w-8 bg-red-500/70" />
+
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-red-400">
+                The BorderBound Standard
               </span>
 
-              <div className="text-2xl font-black tracking-tight text-white sm:text-4xl">
-                {value}
-              </div>
-
-              <div className="mt-1 max-w-[110px] text-[8px] font-bold uppercase leading-4 tracking-[0.14em] text-zinc-600 sm:mt-2 sm:max-w-none sm:text-[9px] sm:tracking-[0.2em]">
-                {label}
-              </div>
+              <span className="h-px w-8 bg-red-500/70" />
             </div>
-          ))}
+
+            <h2 className="text-3xl font-black uppercase tracking-[-0.04em] text-white sm:text-5xl">
+              Built on <span className="text-red-500">Transparency.</span>
+            </h2>
+
+            <p className="mt-4 text-sm text-zinc-300 sm:text-base">
+              Your registration. Your votes. Your chance.
+            </p>
+          </div>
+
+          {/* 4 Cards Grid */}
+          <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+            {[
+              {
+                number: "01",
+                title: "Secure Payments",
+                description:
+                  "Payments processed through a secure payment gateway.",
+                icon: Shield,
+              },
+              {
+                number: "02",
+                title: "Verified Contestants",
+                description:
+                  "Identity and eligibility verification before profiles become eligible for voting.",
+                icon: Users,
+              },
+              {
+                number: "03",
+                title: "Verified Votes",
+                description:
+                  "Only valid, successfully processed votes count toward the leaderboard.",
+                icon: Vote,
+              },
+              {
+                number: "04",
+                title: "Public Leaderboard",
+                description:
+                  "Voting positions are displayed through the official leaderboard.",
+                icon: Trophy,
+              },
+            ].map(({ number, title, description, icon: Icon }) => (
+              <motion.div
+                key={number}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25 }}
+                className="group relative min-h-[220px] overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 transition-colors duration-300 hover:border-red-500/25 hover:bg-white/[0.04] sm:p-7"
+              >
+                {/* Red ambient glow */}
+                <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-red-600/[0.07] blur-3xl transition-all duration-500 group-hover:bg-red-600/[0.14]" />
+
+                {/* Number */}
+                <span className="absolute right-5 top-5 font-mono text-[9px] tracking-[0.2em] text-zinc-500">
+                  {number}
+                </span>
+
+                {/* Icon */}
+                <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/[0.06] text-red-400 transition-all duration-300 group-hover:border-red-500/40 group-hover:bg-red-500/[0.1] group-hover:text-red-300">
+                  <Icon size={19} strokeWidth={1.7} />
+                </div>
+
+                {/* Content */}
+                <div className="relative mt-7">
+                  <h3 className="text-sm font-black uppercase tracking-[0.08em] text-white sm:text-[15px]">
+                    {title}
+                  </h3>
+
+                  <p className="mt-3 text-[11px] leading-5 text-zinc-300 sm:text-xs sm:leading-6">
+                    {description}
+                  </p>
+                </div>
+
+                {/* Bottom red accent */}
+                <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-red-500 to-amber-400 transition-all duration-500 group-hover:w-full" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.section>
 
+      {/* =========================================================
+          LEADERBOARD
+      ========================================================= */}
       {top3.length > 0 && (
         <section className="relative py-16 sm:py-24 lg:py-32">
           <div className="absolute left-1/2 top-1/2 h-[280px] w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/[0.045] blur-[100px] sm:h-[400px] sm:w-[600px] sm:blur-[140px]" />
@@ -306,7 +434,7 @@ export default function Page() {
 
                 <h2 className="text-3xl font-black tracking-[-0.04em] text-white sm:text-6xl">
                   WHO'S
-                  <span className="ml-2 text-zinc-700 sm:ml-3">LEADING?</span>
+                  <span className="ml-2 text-zinc-400 sm:ml-3">LEADING?</span>
                 </h2>
               </div>
 
@@ -341,6 +469,9 @@ export default function Page() {
         </section>
       )}
 
+      {/* =========================================================
+          VOTING
+      ========================================================= */}
       <section className="relative border-y border-white/[0.07] bg-[#080809] py-16 sm:py-24 lg:py-32">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(245,158,11,0.07),transparent_25%),radial-gradient(circle_at_20%_50%,rgba(220,38,38,0.06),transparent_25%)]" />
 
@@ -363,7 +494,7 @@ export default function Page() {
               <span className="text-red-500">CHANGES EVERYTHING.</span>
             </h2>
 
-            <p className="mt-4 max-w-xl text-xs leading-6 text-zinc-500 sm:mt-5 sm:text-sm sm:leading-7">
+            <p className="mt-4 max-w-xl text-xs leading-6 text-zinc-300 sm:mt-5 sm:text-sm sm:leading-7">
               Choose your firepower. Every ₹5 adds one valid vote to the
               contestant you believe belongs inside The Borderbound.
             </p>
@@ -380,7 +511,7 @@ export default function Page() {
               <div className="min-w-0 p-5 sm:p-10 lg:border-r lg:border-white/[0.08]">
                 <div className="mb-8 flex items-end justify-between gap-4 sm:mb-10">
                   <div className="min-w-0">
-                    <div className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-600 sm:text-[9px] sm:tracking-[0.25em]">
+                    <div className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-300 sm:text-[9px] sm:tracking-[0.25em]">
                       Selected Firepower
                     </div>
 
@@ -394,7 +525,7 @@ export default function Page() {
                       Votes
                     </div>
 
-                    <div className="mt-1 text-[10px] text-zinc-600 sm:text-xs">
+                    <div className="mt-1 text-[10px] text-zinc-300 sm:text-xs">
                       ₹{calcVotes * 5} INR
                     </div>
                   </div>
@@ -417,7 +548,7 @@ export default function Page() {
                       className={`min-w-0 border px-1 py-3 text-[8px] font-bold uppercase tracking-wider transition-all sm:px-2 sm:text-[9px] ${
                         calcVotes === num
                           ? "border-red-500 bg-red-500/10 text-white"
-                          : "border-white/[0.07] bg-white/[0.02] text-zinc-600 hover:border-white/20 hover:text-zinc-300"
+                          : "border-white/[0.07] bg-white/[0.02] text-zinc-300 hover:border-white/20 hover:text-white"
                       }`}
                     >
                       {num}
@@ -452,6 +583,9 @@ export default function Page() {
         </div>
       </section>
 
+      {/* =========================================================
+          SELECTION PROTOCOL
+      ========================================================= */}
       <section className="relative py-16 sm:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-8 lg:px-12">
           <motion.div
@@ -461,14 +595,14 @@ export default function Page() {
             variants={reveal}
             className="mb-10 sm:mb-16"
           >
-            <div className="mb-4 text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-600 sm:text-[10px] sm:tracking-[0.3em]">
+            <div className="mb-4 text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-300 sm:text-[10px] sm:tracking-[0.3em]">
               The Selection Protocol
             </div>
 
             <h2 className="text-3xl font-black tracking-[-0.05em] sm:text-6xl">
               THREE STEPS.
               <br />
-              <span className="text-zinc-700">ONE BORDER.</span>
+              <span className="text-zinc-400">ONE BORDER.</span>
             </h2>
           </motion.div>
 
@@ -509,14 +643,14 @@ export default function Page() {
                       {item.number}
                     </span>
 
-                    <Icon className="h-5 w-5 text-zinc-700 transition-colors group-hover:text-red-500" />
+                    <Icon className="h-5 w-5 text-zinc-300 transition-colors group-hover:text-red-500" />
                   </div>
 
                   <h3 className="mt-14 text-2xl font-black tracking-tight sm:mt-20 sm:text-3xl">
                     {item.title}
                   </h3>
 
-                  <p className="mt-3 max-w-sm text-xs leading-6 text-zinc-600 sm:mt-4 sm:text-sm sm:leading-7">
+                  <p className="mt-3 max-w-sm text-xs leading-6 text-zinc-300 sm:mt-4 sm:text-sm sm:leading-7">
                     {item.text}
                   </p>
 
@@ -528,6 +662,10 @@ export default function Page() {
         </div>
       </section>
 
+
+      {/* =========================================================
+          FINAL CTA
+      ========================================================= */}
       <section className="relative overflow-hidden border-t border-white/[0.07] py-20 sm:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(220,38,38,0.12),transparent_40%)]" />
 
@@ -542,7 +680,7 @@ export default function Page() {
               <Play className="ml-0.5 h-4 w-4 fill-red-500 text-red-500 sm:h-5 sm:w-5" />
             </div>
 
-            <div className="mt-6 text-[8px] font-bold uppercase tracking-[0.3em] text-zinc-600 sm:mt-7 sm:text-[10px] sm:tracking-[0.4em]">
+            <div className="mt-6 text-[8px] font-bold uppercase tracking-[0.3em] text-zinc-300 sm:mt-7 sm:text-[10px] sm:tracking-[0.4em]">
               The Borderbound
             </div>
 
@@ -552,20 +690,21 @@ export default function Page() {
               <span className="text-red-500">LINE.</span>
             </h2>
 
-            <p className="mx-auto mt-5 max-w-lg text-xs leading-6 text-zinc-500 sm:mt-6 sm:text-sm sm:leading-7">
+            <p className="mx-auto mt-5 max-w-lg text-xs leading-6 text-zinc-300 sm:mt-6 sm:text-sm sm:leading-7">
               Thousands may enter. Only the strongest stories make it through.
             </p>
 
             <Link
               href="/register"
-              className="mt-7 inline-flex min-h-[50px] items-center gap-3 bg-white px-6 py-4 text-[9px] font-black uppercase tracking-[0.17em] text-black transition-all hover:bg-zinc-200 sm:mt-9 sm:px-8 sm:text-[10px] sm:tracking-[0.2em]"
+              className="group mt-7 inline-flex min-h-[50px] items-center gap-3 bg-white px-6 py-4 text-[9px] font-black uppercase tracking-[0.17em] text-black transition-all hover:bg-zinc-200 sm:mt-9 sm:px-8 sm:text-[10px] sm:tracking-[0.2em]"
             >
               Start Your Journey
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </motion.div>
         </div>
       </section>
+      <RegistrationCountdown/>
     </div>
   );
 }

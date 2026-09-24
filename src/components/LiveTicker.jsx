@@ -17,7 +17,7 @@ export default function LiveTicker() {
       accent: "text-red-500",
     },
     {
-      text: "₹5 = 1 Vote | Unlimited Voting Options",
+      text: "₹5 = 1 Vote | Voting Options",
       icon: IndianRupee,
       accent: "text-amber-400",
     },

@@ -49,7 +49,7 @@ export default function VoteModal() {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white">Cast Public Votes</h3>
-            <p className="text-xs text-slate-400 font-mono">₹5 = 1 Vote | Unlimited Voting</p>
+            <p className="text-xs text-slate-400 font-mono">₹5 = 1 Vote | Voting</p>
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export default function VoteModal() {
           </div>
           <div className="text-right">
             <span className="text-xs text-emerald-400 flex items-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5" /> Unlimited Voting
+              <CheckCircle className="w-3.5 h-3.5" />  Voting
             </span>
           </div>
         </div>
