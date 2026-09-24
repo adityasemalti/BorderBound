@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   TrendingUp,
   Zap,
-  Users
+  Users,
+  ArrowDown
 } from "lucide-react";
 
 const reveal = {
@@ -150,7 +151,8 @@ export default function PriceHike() {
               >
                 <div className="absolute inset-0 animate-ping rounded-full border border-red-500/20" />
 
-                <ArrowRight className="relative h-5 w-5 text-red-500 md:rotate-0" />
+                <ArrowRight className="hidden sm:block relative h-5 w-5 text-red-500 md:rotate-0" />
+                <ArrowDown className="sm:hidden relative h-5 w-5 text-red-500 md:rotate-0" />
               </motion.div>
             </div>
 
