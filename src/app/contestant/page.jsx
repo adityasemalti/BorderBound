@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/lib/api";
+import { SiLudwig } from "react-icons/si";
 
 const LIMIT = 12;
 
@@ -287,6 +288,7 @@ function ContestantCard({ contestant, index }) {
     totalValidVotes,
     rank,
     selectionStatus,
+    slug
   } = contestant;
 
   const isSelected =
@@ -304,7 +306,7 @@ function ContestantCard({ contestant, index }) {
       }}
       className="group"
     >
-      <Link href={`/contestant/${_id}`}>
+      <Link href={`/contestant/${ slug|| _id}`}>
         <article className="relative overflow-hidden border border-zinc-900 bg-[#0b0b0b] transition-all duration-300 hover:border-red-600/50 hover:bg-[#0e0e0e]">
           <div className="relative aspect-[4/4.5] overflow-hidden bg-zinc-950">
             {profilePhotoUrl ? (
