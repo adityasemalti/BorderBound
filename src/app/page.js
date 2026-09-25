@@ -44,29 +44,46 @@ export default function Page() {
 
   const top3 = leaderboard.slice(0, 3);
 
+  const [navbarHidden, setNavbarHidden] = useState(false);
+
+  useEffect(() => {
+    const handleNavbarVisibility = (event) => {
+      setNavbarHidden(event.detail.hidden);
+    };
+
+    window.addEventListener("navbar-visibility", handleNavbarVisibility);
+
+    return () => {
+      window.removeEventListener("navbar-visibility", handleNavbarVisibility);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050506] text-white">
       {/* =========================================================
           STICKY REGISTER CTA
       ========================================================= */}
       <motion.div
-        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        initial={false}
+        animate={{
+          opacity: navbarHidden ? 1 : 0,
+          y: navbarHidden ? 0 : -20,
+          scale: navbarHidden ? 1 : 0.95,
+        }}
         transition={{
-          duration: 0.6,
-          delay: 0.4,
+          duration: 0.35,
           ease: [0.16, 1, 0.3, 1],
         }}
-        className="fixed right-3 top-3 z-[100] sm:right-6 sm:top-5"
+        className={`fixed right-3 top-3 z-[100] sm:right-6 sm:top-5 ${
+          navbarHidden ? "pointer-events-auto" : "pointer-events-none"
+        }`}
       >
         <Link
           href="/register"
           className="group relative flex items-center gap-2 overflow-hidden border border-red-400/60 bg-red-600 px-4 py-3 shadow-[0_8px_35px_rgba(220,38,38,0.25)] transition-all duration-300 hover:border-red-300 hover:bg-red-500 hover:shadow-[0_8px_45px_rgba(220,38,38,0.4)] sm:gap-3 sm:px-6 sm:py-3.5"
         >
-          {/* animated shine */}
           <span className="absolute inset-y-0 -left-10 w-8 rotate-[20deg] bg-white/20 blur-sm transition-all duration-700 group-hover:left-[120%]" />
 
-          {/* subtle pulse */}
           <span className="absolute inset-0 animate-pulse bg-red-400/10" />
 
           <span className="relative z-10 flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
@@ -274,9 +291,11 @@ export default function Page() {
                   </div>
                 </div>
 
-
                 {/* FOOTER */}
-                <div className="m-4 flex items-center justify-between border border-white/[0.08] bg-white/[0.025] px-4 py-3">
+                <Link
+                  href="/leaderboard"
+                  className="m-4 flex items-center justify-between border border-white/[0.08] bg-white/[0.025] px-4 py-3"
+                >
                   <div>
                     <div className="text-[7px] uppercase tracking-[0.25em] text-zinc-400">
                       Selection System
@@ -290,17 +309,15 @@ export default function Page() {
                   <div className="flex h-7 w-7 items-center justify-center border border-red-500/20 bg-red-500/[0.05]">
                     <ArrowDownRight className="h-3.5 w-3.5 text-red-500" />
                   </div>
-                </div>
+                </Link>
               </div>
             </motion.div>
           </div>
         </div>
-        
 
-      <WhyToRegister/>
+        <WhyToRegister />
 
-      <PriceHike/>
-
+        <PriceHike />
 
         <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-zinc-400 sm:flex">
           <span className="h-px w-10 bg-zinc-700" />
@@ -662,7 +679,6 @@ export default function Page() {
         </div>
       </section>
 
-
       {/* =========================================================
           FINAL CTA
       ========================================================= */}
@@ -704,7 +720,7 @@ export default function Page() {
           </motion.div>
         </div>
       </section>
-      <RegistrationCountdown/>
+      <RegistrationCountdown />
     </div>
   );
 }

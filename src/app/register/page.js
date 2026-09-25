@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -410,9 +409,7 @@ export default function RegistrationWizard() {
                   <div
                     key={item.number}
                     className={`relative flex flex-col items-center gap-2 py-1 ${
-                      active || completed
-                        ? "text-white"
-                        : "text-zinc-700"
+                      active || completed ? "text-white" : "text-zinc-700"
                     }`}
                   >
                     <div
@@ -420,8 +417,8 @@ export default function RegistrationWizard() {
                         completed
                           ? "bg-white text-black border-white"
                           : active
-                          ? "bg-rose-500/10 text-rose-400 border-rose-500/30 shadow-lg shadow-rose-500/10"
-                          : "bg-white/[0.02] border-white/6"
+                            ? "bg-rose-500/10 text-rose-400 border-rose-500/30 shadow-lg shadow-rose-500/10"
+                            : "bg-white/[0.02] border-white/6"
                       }`}
                     >
                       {completed ? (
@@ -517,7 +514,7 @@ export default function RegistrationWizard() {
                     <Field label="Occupation">
                       <input
                         type="text"
-                        placeholder="e.g. Entrepreneur"
+                        placeholder="e.g. Entrepreneur (Optional)"
                         value={profileForm.occupation}
                         onChange={(e) =>
                           updateField("occupation", e.target.value)
@@ -529,7 +526,7 @@ export default function RegistrationWizard() {
                     <Field label="Education">
                       <input
                         type="text"
-                        placeholder="e.g. Bachelor's Degree"
+                        placeholder="e.g. Bachelor's Degree (Optional)"
                         value={profileForm.education}
                         onChange={(e) =>
                           updateField("education", e.target.value)
@@ -545,6 +542,7 @@ export default function RegistrationWizard() {
                   >
                     <textarea
                       rows={4}
+                      required
                       placeholder="What makes you different from everyone else?"
                       value={profileForm.bio}
                       onChange={(e) => updateField("bio", e.target.value)}
@@ -591,7 +589,7 @@ export default function RegistrationWizard() {
                         />
                       </Field>
 
-                      <Field label="Facebook">
+                      <Field label="Facebook Url (Optional)">
                         <input
                           type="text"
                           placeholder="Profile URL"
@@ -645,10 +643,7 @@ export default function RegistrationWizard() {
                             placeholder="e.g. Father"
                             value={profileForm.emergencyRelation}
                             onChange={(e) =>
-                              updateField(
-                                "emergencyRelation",
-                                e.target.value
-                              )
+                              updateField("emergencyRelation", e.target.value)
                             }
                             className={inputClass()}
                           />
@@ -658,11 +653,17 @@ export default function RegistrationWizard() {
                           <input
                             type="tel"
                             required
-                            placeholder="+91 XXXXX XXXXX"
+                            inputMode="numeric"
+                            pattern="[0-9]{10,}"
+                            minLength={10}
+                            placeholder="9876543210"
                             value={profileForm.emergencyPhone}
-                            onChange={(e) =>
-                              updateField("emergencyPhone", e.target.value)
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 15);
+                              updateField("emergencyPhone", value);
+                            }}
                             className={inputClass()}
                           />
                         </Field>
@@ -924,10 +925,7 @@ export default function RegistrationWizard() {
                         "Contestant verification",
                         "Eligibility review",
                       ].map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-2.5"
-                        >
+                        <div key={item} className="flex items-center gap-2.5">
                           <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
                             <Check className="w-3 h-3 text-emerald-400" />
                           </div>
@@ -976,7 +974,8 @@ export default function RegistrationWizard() {
                 <div className="flex items-center justify-center gap-2 mt-5">
                   <LockKeyhole className="w-3 h-3 text-zinc-700" />
                   <span className="text-[9px] text-zinc-700">
-                    Secure 256-bit encrypted PayU payment • Official BorderBound portal
+                    Secure 256-bit encrypted PayU payment • Official BorderBound
+                    portal
                   </span>
                 </div>
               </div>
@@ -1006,12 +1005,7 @@ export default function RegistrationWizard() {
    COMPONENTS
 ========================= */
 
-function StepHeading({
-  eyebrow,
-  title,
-  description,
-  icon: Icon,
-}) {
+function StepHeading({ eyebrow, title, description, icon: Icon }) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
@@ -1155,9 +1149,7 @@ function UploadCard({
               {file ? file.name : description}
             </p>
 
-            <p className="text-[9px] text-zinc-700 mt-1">
-              {formats}
-            </p>
+            <p className="text-[9px] text-zinc-700 mt-1">{formats}</p>
           </div>
 
           {!file && (
@@ -1193,12 +1185,7 @@ function UploadCard({
   );
 }
 
-function ActionButton({
-  loading,
-  loadingText,
-  text,
-  icon: Icon,
-}) {
+function ActionButton({ loading, loadingText, text, icon: Icon }) {
   return (
     <button
       type="submit"
