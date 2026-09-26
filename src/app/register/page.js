@@ -518,78 +518,80 @@ export default function RegistrationWizard() {
                   icon={UserRound}
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Date of Birth" required>
-                    <input
-                      type="date"
-                      required
-                      value={profileForm.dob}
-                      onChange={(e) => updateField("dob", e.target.value)}
-                      className={inputClass()}
-                    />
-                  </Field>
+                <div className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <Field label="Date of Birth" required>
+                      <input
+                        type="date"
+                        required
+                        value={profileForm.dob}
+                        onChange={(e) => updateField("dob", e.target.value)}
+                        className={`${inputClass()} mt-1`}
+                      />
+                    </Field>
 
-                  <Field label="Gender" required>
-                    <select
-                      required
-                      value={profileForm.gender}
-                      onChange={(e) => updateField("gender", e.target.value)}
-                      className={`${inputClass()} appearance-none`}
-                    >
-                      <option value="" disabled>
-                        Select gender
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </Field>
-                </div>
+                    <Field label="Gender" required>
+                      <select
+                        required
+                        value={profileForm.gender}
+                        onChange={(e) => updateField("gender", e.target.value)}
+                        className={`${inputClass()} mt-1 appearance-none cursor-pointer bg-black [&>option]:bg-black [&>option]:text-white`}
+                      >
+                        <option value="" disabled>
+                          Select gender
+                        </option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </Field>
+                  </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Mobile Number" required>
-                    <input
-                      type="tel"
-                      required
-                      inputMode="numeric"
-                      pattern="[0-9]{10}"
-                      minLength={10}
-                      maxLength={10}
-                      placeholder="9876543210"
-                      value={profileForm.mobile}
-                      onChange={(e) => {
-                        const value = e.target.value
-                          .replace(/\D/g, "")
-                          .slice(0, 10);
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <Field label="Mobile Number" required>
+                      <input
+                        type="tel"
+                        required
+                        inputMode="numeric"
+                        pattern="[0-9]{10}"
+                        minLength={10}
+                        maxLength={10}
+                        placeholder="9876543210"
+                        value={profileForm.mobile}
+                        onChange={(e) => {
+                          const value = e.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 10);
 
-                        updateField("mobile", value);
-                      }}
-                      className={inputClass()}
-                    />
-                  </Field>
+                          updateField("mobile", value);
+                        }}
+                        className={`${inputClass()} mt-1`}
+                      />
+                    </Field>
 
-                  <Field label="City" required>
+                    <Field label="City" required>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Dehradun"
+                        value={profileForm.city}
+                        onChange={(e) => updateField("city", e.target.value)}
+                        className={`${inputClass()} mt-1`}
+                      />
+                    </Field>
+                  </div>
+
+                  <Field label="State" required>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Dehradun"
-                      value={profileForm.city}
-                      onChange={(e) => updateField("city", e.target.value)}
-                      className={inputClass()}
+                      placeholder="e.g. Uttarakhand"
+                      value={profileForm.state}
+                      onChange={(e) => updateField("state", e.target.value)}
+                      className={`${inputClass()} mt-1`}
                     />
                   </Field>
                 </div>
-
-                <Field label="State" required>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Uttarakhand"
-                    value={profileForm.state}
-                    onChange={(e) => updateField("state", e.target.value)}
-                    className={inputClass()}
-                  />
-                </Field>
 
                 <div className="space-y-5 mt-8">
                   <Field
@@ -1065,9 +1067,7 @@ export default function RegistrationWizard() {
                     onClick={() => handleFeePayment(true)}
                     disabled={loading}
                     className="w-full py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-amber-400 font-bold text-xs border border-amber-500/20 transition-all flex items-center justify-center gap-1.5"
-                  >
-                    <span>Simulate Instant PayU Success (Test Mode)</span>
-                  </button>
+                  ></button>
                 </div>
 
                 <div className="flex items-center justify-center gap-2 mt-5">
