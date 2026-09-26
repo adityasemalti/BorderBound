@@ -50,12 +50,20 @@ export default function RegistrationWizard() {
   const [step, setStep] = useState(1);
 
   const [profileForm, setProfileForm] = useState({
+    dob: "",
+    gender: "",
+    mobile: "",
+    city: "",
+    state: "",
+
     permanentAddress: "",
     occupation: "",
     education: "",
     bio: "",
+
     socialInstagram: "",
     socialFacebook: "",
+
     emergencyName: "",
     emergencyRelation: "Parent",
     emergencyPhone: "",
@@ -117,12 +125,22 @@ export default function RegistrationWizard() {
     if (!myProfile) return;
 
     setProfileForm({
+      dob: myProfile.dob
+        ? new Date(myProfile.dob).toISOString().split("T")[0]
+        : "",
+      gender: myProfile.gender || "",
+      mobile: myProfile.mobile || "",
+      city: myProfile.city || "",
+      state: myProfile.state || "",
+
       permanentAddress: myProfile.permanentAddress || "",
       occupation: myProfile.occupation || "",
       education: myProfile.education || "",
       bio: myProfile.bio || "",
+
       socialInstagram: myProfile.socialMedia?.instagram || "",
       socialFacebook: myProfile.socialMedia?.facebook || "",
+
       emergencyName: myProfile.emergencyContact?.name || "",
       emergencyRelation: myProfile.emergencyContact?.relation || "Parent",
       emergencyPhone: myProfile.emergencyContact?.phone || "",
@@ -147,14 +165,22 @@ export default function RegistrationWizard() {
 
     try {
       await saveProfileDetails({
+        dob: profileForm.dob,
+        gender: profileForm.gender,
+        mobile: profileForm.mobile,
+        city: profileForm.city,
+        state: profileForm.state,
+
         permanentAddress: profileForm.permanentAddress,
         occupation: profileForm.occupation,
         education: profileForm.education,
         bio: profileForm.bio,
+
         socialMedia: {
           instagram: profileForm.socialInstagram,
           facebook: profileForm.socialFacebook,
         },
+
         emergencyContact: {
           name: profileForm.emergencyName,
           relation: profileForm.emergencyRelation,
@@ -491,6 +517,79 @@ export default function RegistrationWizard() {
                   description="These details help us understand who is stepping into the BorderBound."
                   icon={UserRound}
                 />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Date of Birth" required>
+                    <input
+                      type="date"
+                      required
+                      value={profileForm.dob}
+                      onChange={(e) => updateField("dob", e.target.value)}
+                      className={inputClass()}
+                    />
+                  </Field>
+
+                  <Field label="Gender" required>
+                    <select
+                      required
+                      value={profileForm.gender}
+                      onChange={(e) => updateField("gender", e.target.value)}
+                      className={`${inputClass()} appearance-none`}
+                    >
+                      <option value="" disabled>
+                        Select gender
+                      </option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Mobile Number" required>
+                    <input
+                      type="tel"
+                      required
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      minLength={10}
+                      maxLength={10}
+                      placeholder="9876543210"
+                      value={profileForm.mobile}
+                      onChange={(e) => {
+                        const value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 10);
+
+                        updateField("mobile", value);
+                      }}
+                      className={inputClass()}
+                    />
+                  </Field>
+
+                  <Field label="City" required>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Dehradun"
+                      value={profileForm.city}
+                      onChange={(e) => updateField("city", e.target.value)}
+                      className={inputClass()}
+                    />
+                  </Field>
+                </div>
+
+                <Field label="State" required>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Uttarakhand"
+                    value={profileForm.state}
+                    onChange={(e) => updateField("state", e.target.value)}
+                    className={inputClass()}
+                  />
+                </Field>
 
                 <div className="space-y-5 mt-8">
                   <Field
