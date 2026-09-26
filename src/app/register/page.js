@@ -1046,7 +1046,6 @@ export default function RegistrationWizard() {
                     disabled={loading}
                     className="group relative w-full h-14 sm:h-16 rounded-2xl overflow-hidden bg-gradient-to-r from-rose-600 via-rose-500 to-orange-500 text-white font-black text-sm shadow-2xl shadow-rose-500/20 flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.985] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
-                    <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
                     <span className="relative flex items-center gap-3">
                       {loading ? (
