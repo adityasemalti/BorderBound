@@ -16,6 +16,7 @@ import {
   User,
   X,
 } from "lucide-react";
+import { FaChrome } from "react-icons/fa";
 
 export default function AuthModal() {
   const {
@@ -27,6 +28,7 @@ export default function AuthModal() {
     register,
     loading,
     error,
+    googleLogin,
   } = useAuthStore();
 
   const [loginData, setLoginData] = useState({
@@ -137,8 +139,7 @@ export default function AuthModal() {
               w-[260px] h-[260px] sm:w-[450px] sm:h-[450px] rounded-full bg-rose-600/[0.07] blur-[100px] sm:blur-[110px] "
           />
 
-          <div
-            className=" absolute bottom-0 right-0 w-[220px] h-[220px] bg-orange-500/[0.04]  blur-[100px] rounded-full " />
+          <div className=" absolute bottom-0 right-0 w-[220px] h-[220px] bg-orange-500/[0.04]  blur-[100px] rounded-full " />
         </div>
 
         {/* Modal */}
@@ -162,12 +163,14 @@ export default function AuthModal() {
             duration: 0.35,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className=" relative w-full sm:max-w-md h-auto max-h-[100dvh] sm:max-h-[92dvh] flex flex-col" >
+          className=" relative w-full sm:max-w-md h-auto max-h-[100dvh] sm:max-h-[92dvh] flex flex-col"
+        >
           <div
             className=" relative flex flex-col  overflow-hidden rounded-t-[28px] sm:rounded-[30px] border
               border-white/10
               bg-[#0a0a0a]
-              shadow-[0_-20px_80px_rgba(0,0,0,0.5)] sm:shadow-2xl max-h-[100dvh] sm:max-h-[92dvh] " >
+              shadow-[0_-20px_80px_rgba(0,0,0,0.5)] sm:shadow-2xl max-h-[100dvh] sm:max-h-[92dvh] "
+          >
             {/* Top accent */}
             <div
               className=" absolute top-0 left-0 right-0 h-px bg-gradient-to-r
@@ -184,14 +187,13 @@ export default function AuthModal() {
               className=" absolute z-20 top-3.5 right-3.5 sm:top-5 sm:right-5 w-9 h-9
                 rounded-xl border border-white/8 bg-white/[0.04] flex items-center justify-center
                 text-zinc-500 hover:text-white hover:bg-white/[0.08] transition-all active:scale-95 "
-              aria-label="Close" >
+              aria-label="Close"
+            >
               <X className="w-4 h-4" />
             </button>
 
             {/* Header */}
-            <div
-              className=" shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-7 sm:pb-6 "
-            >
+            <div className=" shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-7 sm:pb-6 ">
               <div className="flex items-start gap-3 pr-10">
                 <motion.div
                   key={authMode}
@@ -213,9 +215,7 @@ export default function AuthModal() {
                 </motion.div>
 
                 <div className="min-w-0">
-                  <p
-                    className=" text-[9px] uppercase tracking-[0.25em]  text-rose-400 font-bold "
-                  >
+                  <p className=" text-[9px] uppercase tracking-[0.25em]  text-rose-400 font-bold ">
                     {current.eyebrow}
                   </p>
 
@@ -240,18 +240,14 @@ export default function AuthModal() {
                     </motion.h2>
                   </AnimatePresence>
 
-                  <p
-                    className=" text-[11px] sm:text-xs leading-5 text-zinc-600  mt-1.5 max-w-[290px] "
-                  >
+                  <p className=" text-[11px] sm:text-xs leading-5 text-zinc-600  mt-1.5 max-w-[290px] ">
                     {current.description}
                   </p>
                 </div>
               </div>
 
               {/* Mode switch */}
-              <div
-                className=" flex mt-5 sm:mt-6 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] "
-              >
+              <div className=" flex mt-5 sm:mt-6 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] ">
                 <ModeButton
                   active={authMode === "login"}
                   onClick={() => setAuthMode("login")}
@@ -373,104 +369,157 @@ export default function AuthModal() {
             >
               <AnimatePresence mode="wait">
                 {/* LOGIN */}
-                {authMode === "login" && (
-                  <motion.form
-                    key="login"
-                    initial={{
-                      opacity: 0,
-                      x: 15,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      x: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      x: -15,
-                    }}
-                    transition={{
-                      duration: 0.22,
-                    }}
-                    onSubmit={handleLoginSubmit}
-                    className="space-y-4"
-                  >
-                    <AuthInput
-                      label="Email Address"
-                      icon={Mail}
-                      type="email"
-                      required
-                      autoComplete="email"
-                      placeholder="you@example.com"
-                      value={loginData.email}
-                      onChange={(e) =>
-                        setLoginData({
-                          ...loginData,
-                          email: e.target.value,
-                        })
-                      }
-                    />
+               {authMode === "login" && (
+  <motion.form
+    key="login"
+    initial={{
+      opacity: 0,
+      x: 15,
+    }}
+    animate={{
+      opacity: 1,
+      x: 0,
+    }}
+    exit={{
+      opacity: 0,
+      x: -15,
+    }}
+    transition={{
+      duration: 0.22,
+    }}
+    onSubmit={handleLoginSubmit}
+    className="space-y-4"
+  >
+    <AuthInput
+      label="Email Address"
+      icon={Mail}
+      type="email"
+      required
+      autoComplete="email"
+      placeholder="you@example.com"
+      value={loginData.email}
+      onChange={(e) =>
+        setLoginData({
+          ...loginData,
+          email: e.target.value,
+        })
+      }
+    />
 
-                    <AuthInput
-                      label="Password"
-                      icon={Lock}
-                      type="password"
-                      required
-                      autoComplete="current-password"
-                      placeholder="Enter your password"
-                      value={loginData.password}
-                      onChange={(e) =>
-                        setLoginData({
-                          ...loginData,
-                          password: e.target.value,
-                        })
-                      }
-                    />
+    <AuthInput
+      label="Password"
+      icon={Lock}
+      type="password"
+      required
+      autoComplete="current-password"
+      placeholder="Enter your password"
+      value={loginData.password}
+      onChange={(e) =>
+        setLoginData({
+          ...loginData,
+          password: e.target.value,
+        })
+      }
+    />
 
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="
-                        group
-                        relative
-                        overflow-hidden
-                        w-full
-                        min-h-14
-                        rounded-2xl
-                        bg-white
-                        text-black
-                        font-black
-                        text-sm
-                        flex
-                        items-center
-                        justify-center
-                        gap-3
-                        transition-all
-                        hover:bg-zinc-200
-                        active:scale-[0.985]
-                        disabled:opacity-50
-                        disabled:cursor-not-allowed
-                      "
-                    >
-                      {loading ? (
-                        <LoadingSpinner text="Signing you in..." />
-                      ) : (
-                        <>
-                          Enter BorderBound
-                          <ArrowRight
-                            className="
-                            w-4
-                            h-4
-                            group-hover:translate-x-1
-                            transition-transform
-                          "
-                          />
-                        </>
-                      )}
-                    </button>
+    <button
+      type="submit"
+      disabled={loading}
+      className="
+        group
+        relative
+        overflow-hidden
+        w-full
+        min-h-14
+        rounded-2xl
+        bg-white
+        text-black
+        font-black
+        text-sm
+        flex
+        items-center
+        justify-center
+        gap-3
+        transition-all
+        hover:bg-zinc-200
+        active:scale-[0.985]
+        disabled:opacity-50
+        disabled:cursor-not-allowed
+      "
+    >
+      {loading ? (
+        <LoadingSpinner text="Signing you in..." dark />
+      ) : (
+        <>
+          Enter BorderBound
+          <ArrowRight
+            className="
+              w-4
+              h-4
+              group-hover:translate-x-1
+              transition-transform
+            "
+          />
+        </>
+      )}
+    </button>
 
-                    <SecurityNote text="Your account is protected by secure authentication." />
-                  </motion.form>
-                )}
+    <div className="relative py-1">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-white/[0.06]" />
+      </div>
+
+      <div className="relative flex justify-center">
+        <span className="bg-[#0a0a0a] px-3 text-[9px] uppercase tracking-[0.15em] font-bold text-zinc-700">
+          OR
+        </span>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      disabled={loading}
+      onClick={async () => {
+        try {
+          await googleLogin();
+        } catch (err) {}
+      }}
+      className="
+        group
+        w-full
+        min-h-12
+        rounded-2xl
+        bg-white/[0.035]
+        border
+        border-white/[0.09]
+        text-white
+        font-bold
+        text-sm
+        flex
+        items-center
+        justify-center
+        gap-3
+        transition-all
+        hover:bg-white/[0.07]
+        hover:border-white/[0.15]
+        active:scale-[0.985]
+        disabled:opacity-50
+        disabled:cursor-not-allowed
+      "
+    >
+      {loading ? (
+        <LoadingSpinner text="Connecting to Google..." />
+      ) : (
+        <>
+          <FaChrome className="w-4 h-4" />
+          Continue with Google
+        </>
+      )}
+    </button>
+
+    <SecurityNote text="Your account is protected by secure authentication." />
+  </motion.form>
+)}
 
                 {/* REGISTER */}
                 {authMode === "register" && (
@@ -494,6 +543,58 @@ export default function AuthModal() {
                     onSubmit={handleRegisterSubmit}
                     className="space-y-4"
                   >
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={async () => {
+                        try {
+                          await googleLogin();
+                        } catch (err) {}
+                      }}
+                      className="
+    group
+    w-full
+    min-h-12
+    rounded-2xl
+    bg-white/[0.035]
+    border
+    border-white/[0.09]
+    text-white
+    font-bold
+    text-sm
+    flex
+    items-center
+    justify-center
+    gap-3
+    transition-all
+    hover:bg-white/[0.07]
+    hover:border-white/[0.15]
+    active:scale-[0.985]
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
+                    >
+                      {loading ? (
+                        <LoadingSpinner text="Connecting to Google..." />
+                      ) : (
+                        <>
+                          <FaChrome className="w-4 h-4 text-white" />
+                          Continue with Google
+                        </>
+                      )}
+                    </button>
+
+                    <div className="relative py-1">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-white/[0.06]" />
+                      </div>
+
+                      <div className="relative flex justify-center">
+                        <span className="bg-[#0a0a0a] px-3 text-[9px] uppercase tracking-[0.15em] font-bold text-zinc-700">
+                          OR CREATE WITH EMAIL
+                        </span>
+                      </div>
+                    </div>
                     <AuthInput
                       label="Full Name"
                       icon={User}
@@ -673,6 +774,8 @@ export default function AuthModal() {
                         })
                       }
                     />
+                    
+
 
                     {/* Security info */}
                     <div
@@ -899,8 +1002,7 @@ function AuthInput({
             duration-200
             focus:bg-white/[0.04]
             focus:border-rose-500/35
-            focus:ring-4
-            focus:ring-rose-500/[0.05]
+            focus:ring-4 focus:ring-rose-500/[0.05]
             ${type === "date" ? "[color-scheme:dark]" : ""}
           `}
         />
